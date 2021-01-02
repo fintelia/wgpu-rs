@@ -152,8 +152,13 @@ async fn create_png(
             .unwrap()
             .into_stream_writer_with_size(buffer_dimensions.unpadded_bytes_per_row);
 
+	let t = std::time::Instant::now();
+	let mut copy = vec![0; padded_buffer.len()];
+	copy.copy_from_slice(&*padded_buffer);
+	println!("Copy time = {:.4} seconds / {} KB", t.elapsed().as_secs_f32(), copy.len() / 1024);
+
         // from the padded_buffer we write just the unpadded bytes into the image
-        for chunk in padded_buffer.chunks(buffer_dimensions.padded_bytes_per_row) {
+        for chunk in copy.chunks(buffer_dimensions.padded_bytes_per_row) {
             png_writer
                 .write(&chunk[..buffer_dimensions.unpadded_bytes_per_row])
                 .unwrap();
