@@ -121,6 +121,23 @@ async fn run(event_loop: EventLoop<()>, window: Window) {
                     rpass.set_pipeline(&render_pipeline);
                     rpass.draw(0..3, 0..1);
                 }
+                {
+                    let mut rpass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                        label: None,
+                        color_attachments: &[wgpu::RenderPassColorAttachmentDescriptor {
+                            attachment: &frame.view,
+                            resolve_target: None,
+                            ops: wgpu::Operations {
+                                load: wgpu::LoadOp::Clear(wgpu::Color::GREEN),
+                                store: true,
+                            },
+                        }],
+                        depth_stencil_attachment: None,
+                    });
+                    rpass.set_pipeline(&render_pipeline);
+                    rpass.draw(0..3, 0..1);
+                }
+
 
                 queue.submit(Some(encoder.finish()));
             }
