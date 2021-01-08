@@ -113,7 +113,7 @@ impl Example {
 
 impl framework::Example for Example {
     fn optional_features() -> wgt::Features {
-        wgt::Features::NON_FILL_POLYGON_MODE
+        wgt::Features::NON_FILL_POLYGON_MODE | wgt::Features::TEXTURE_COMPRESSION_BC | wgt::Features::TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES
     }
 
     fn init(
@@ -194,7 +194,7 @@ impl framework::Example for Example {
             mip_level_count: 1,
             sample_count: 1,
             dimension: wgpu::TextureDimension::D2,
-            format: wgpu::TextureFormat::Rgba8UnormSrgb,
+            format: wgpu::TextureFormat::Bc4RUnorm,
             usage: wgpu::TextureUsage::SAMPLED | wgpu::TextureUsage::COPY_DST,
         });
         let texture_view = texture.create_view(&wgpu::TextureViewDescriptor::default());
